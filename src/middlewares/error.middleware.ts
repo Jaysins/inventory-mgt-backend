@@ -25,20 +25,11 @@ export const errorHandler = (
     });
   }
 
-  // Mongoose validation error
-  if (error.name === 'ValidationError') {
-    return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
+  if (error.name === 'PrismaClientKnownRequestError') {
+    return res.status(400).json({
       success: false,
-      message: 'Validation failed',
-      errors: error.message
-    });
-  }
-
-  // Mongoose duplicate key error
-  if (error.name === 'MongoServerError' && (error as any).code === 11000) {
-    return res.status(HTTP_STATUS.CONFLICT).json({
-      success: false,
-      message: 'Duplicate entry exists'
+      message: 'Database operation failed',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
     });
   }
 

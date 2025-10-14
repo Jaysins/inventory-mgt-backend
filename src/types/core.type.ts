@@ -1,8 +1,9 @@
+import {Request} from "express";
+
 export interface PaginationOptions {
   page: number;
   limit: number;
 }
-
 
 export interface SuccessResponse<T = any> {
   success: true;
@@ -30,38 +31,26 @@ export interface PaginatedResponse<T = any> {
   };
 }
 
-
-export interface RegisterData {
-  email: string;
-  password: string;
-  name: string;
+export interface PaginationParams {
+  page?: string | number;
+  limit?: string | number;
 }
 
-export interface LoginData {
-  email: string;
-  password: string;
+export interface PaginationResult {
+  page: number;
+  limit: number;
+  skip: number;
 }
 
-export interface AuthResponse {
-  user: {
-    id: string;
+
+export interface AuthRequest extends Request {
+  user?: {
+    userId: string;
     email: string;
-    name: string;
   };
-  token: string;
 }
 
-export interface DashboardStats {
-  totalByCurrency: Array<{
-    currencyPair: string;
-    totalAmount: number;
-    totalConverted: number;
-    count: number;
-  }>;
-  recentTransactions: any[];
-  summary: {
-    totalConversions: number;
-    totalAmount: number;
-    uniqueCurrencyPairs: number;
-  };
+export interface JwtPayload {
+  userId: string;
+  email: string;
 }

@@ -2,11 +2,8 @@ import jwt, { SignOptions } from 'jsonwebtoken';
 
 import { authConfig } from '../config';
 import { UnauthorizedError } from '../utils/errors';
+import { JwtPayload } from '../types';
 
-interface JwtPayload {
-  userId: string;
-  email: string;
-}
 
 export function generateToken(payload: JwtPayload, expiresIn?: string): string {
   const options: SignOptions = {

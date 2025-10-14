@@ -1,13 +1,4 @@
-interface PaginationParams {
-  page?: string | number;
-  limit?: string | number;
-}
-
-interface PaginationResult {
-  page: number;
-  limit: number;
-  skip: number;
-}
+import { PaginationParams, PaginationResult } from "../types";
 
 export function getPaginationParams(params: PaginationParams): PaginationResult {
   const page = Math.max(1, parseInt(String(params.page || 1), 10));

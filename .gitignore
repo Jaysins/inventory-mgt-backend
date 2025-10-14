@@ -117,3 +117,5 @@ report.xml
 husky/_/
 .prettier-cache/
 .stylelintcache
+
+/src/generated/prisma

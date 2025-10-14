@@ -1,35 +1,32 @@
-import mongoose from 'mongoose';
-import { logger } from '../utils/logger';
+import { PrismaClient } from '@prisma/client';
 
-export const connectDatabase = async (): Promise<void> => {
+declare global {
+  var prisma: PrismaClient | undefined;
+}
+
+export const prisma = global.prisma || new PrismaClient({
+  log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+});
+
+if (process.env.NODE_ENV !== 'production') {
+  global.prisma = prisma;
+}
+
+export async function connectDatabase(): Promise<void> {
   try {
-    const mongoUri = process.env.MONGO_URI as string;
-    
-    await mongoose.connect(mongoUri, {
-      maxPoolSize: 10,
-      minPoolSize: 2,
-      socketTimeoutMS: 45000,
-      serverSelectionTimeoutMS: 5000,
-    });
-
-    logger.info('MongoDB connected successfully');
-
-    mongoose.connection.on('error', (error) => {
-      logger.error('MongoDB connection error:', error);
-    });
-
-    mongoose.connection.on('disconnected', () => {
-      logger.warn('MongoDB disconnected');
-    });
-
-    process.on('SIGINT', async () => {
-      await mongoose.connection.close();
-      logger.info('MongoDB connection closed through app termination');
-      process.exit(0);
-    });
-
+    await prisma.$connect();
+    console.log('Database connected successfully');
   } catch (error) {
-    logger.error('Failed to connect to MongoDB:', error);
+    console.error('Database connection failed:', error);
     process.exit(1);
   }
-};
+}
+
+export async function disconnectDatabase(): Promise<void> {
+  await prisma.$disconnect();
+  console.log('Database disconnected');
+}
+
+process.on('beforeExit', async () => {
+  await disconnectDatabase();
+});

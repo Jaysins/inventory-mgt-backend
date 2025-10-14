@@ -1,14 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { verifyToken } from '../helpers/jwt';
 import { UnauthorizedError } from '../utils/errors';
 import { ERROR_MESSAGES } from '../utils/constants';
+import { AuthRequest } from '../types';
 
-export interface AuthRequest extends Request {
-  user?: {
-    userId: string;
-    email: string;
-  };
-}
 
 export const authenticate = (
   req: AuthRequest, 
