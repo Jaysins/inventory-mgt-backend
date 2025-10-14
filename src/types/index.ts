@@ -5,3 +5,4 @@ export type { WarehouseFilters, CreateWarehouseData, UpdateWarehouseData } from 
 export type { StockData, AddStockData, RemoveStockData, TransferStockData  } from './warehouseStock.type';
 export type { ProductFilters, CreateProductData, UpdateProductData } from './product.type';
 export type { PurchaseOrderFilters, CreatePurchaseOrderData, UpdatePurchaseOrderData } from './purchaseOrder.type';
+export type { RegisterData, LoginData, AuthResponse } from './user.type'

@@ -1,0 +1,141 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  name      String   @db.VarChar(255)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([isActive])
+  @@map("users")
+}
+
+model Supplier {
+  id            String   @id @default(uuid())
+  name          String   @db.VarChar(255)
+  contactInfo   String   @db.Text
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  products       Product[]
+  purchaseOrders PurchaseOrder[]
+
+  @@index([name])
+  @@index([isActive])
+  @@map("suppliers")
+}
+
+
+model Warehouse {
+  id               String   @id @default(uuid())
+  name             String   @unique @db.VarChar(255)
+  location         String   @db.VarChar(500)
+  capacity         Int   
+  currentOccupancy Int      @default(0) 
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  warehouseStocks WarehouseStock[]
+  purchaseOrders  PurchaseOrder[]
+
+  @@index([name])
+  @@index([location])
+  @@index([isActive])
+  @@map("warehouses")
+}
+
+
+model Product {
+  id                String   @id @default(uuid()) 
+  name              String   @db.VarChar(255)
+  description       String?  @db.Text
+  reorderThreshold  Int   
+  defaultSupplierId String
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  defaultSupplier Supplier           @relation(fields: [defaultSupplierId], references: [id], onDelete: Restrict)
+  warehouseStocks WarehouseStock[]
+  purchaseOrders  PurchaseOrder[]
+
+  @@index([name])
+  @@index([defaultSupplierId])
+  @@index([isActive])
+  @@map("products")
+}
+
+
+
+model WarehouseStock {
+  id            String   @id @default(uuid())
+  productId     String
+  warehouseId   String
+  quantity      Int      @default(0)
+  lastRestocked DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, warehouseId])
+  @@index([productId])
+  @@index([warehouseId])
+  @@index([quantity]) 
+  @@map("warehouse_stocks")
+}
+
+
+enum OrderStatus {
+  PENDING
+  RECEIVED
+  CANCELLED
+}
+
+model PurchaseOrder {
+  id                  String      @id @default(uuid())
+  productId           String
+  supplierId          String
+  warehouseId         String
+  quantityOrdered     Int
+  orderDate           DateTime    @default(now())
+  expectedArrivalDate DateTime
+  actualArrivalDate   DateTime?
+  status              OrderStatus @default(PENDING)
+  notes               String?     @db.Text
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  supplier  Supplier  @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+
+  @@index([status])
+  @@index([orderDate])
+  @@index([expectedArrivalDate])
+  @@index([productId])
+  @@index([warehouseId])
+  @@index([supplierId])
+  @@map("purchase_orders")
+}

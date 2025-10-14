@@ -1,3 +1,4 @@
+export * from './user.validator';
 export * from './supplier.validator';
 export * from './warehouse.validator';
 export * from './product.validator';

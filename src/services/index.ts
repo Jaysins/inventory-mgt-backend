@@ -1,3 +1,4 @@
+export { default as userService } from './user.service';
 export { default as supplierService } from './supplier.service';
 export { default as warehouseService } from './warehouse.service';
 export { default as productService } from './product.service';

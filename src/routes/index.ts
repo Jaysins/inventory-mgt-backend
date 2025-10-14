@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import authRoutes from './auth.routes';
+import userRoutes from './user.routes';
 import supplierRoutes from './supplier.routes';
 import warehouseRoutes from './warehouse.routes';
 import productRoutes from './product.routes';
@@ -7,10 +9,6 @@ import purchaseOrderRoutes from './purchaseOrder.routes';
 
 const router = Router();
 
-/**
- * Health check endpoint
- * GET /health
- */
 router.get('/health', (req, res) => {
   res.json({
     success: true,
@@ -19,9 +17,8 @@ router.get('/health', (req, res) => {
   });
 });
 
-/**
- * API Routes
- */
+router.use('/auth', authRoutes);
+router.use('/user', userRoutes);
 router.use('/suppliers', supplierRoutes);
 router.use('/warehouses', warehouseRoutes);
 router.use('/products', productRoutes);
