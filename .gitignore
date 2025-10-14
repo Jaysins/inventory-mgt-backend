@@ -1,0 +1,119 @@
+# ========================
+# Node.js
+# ========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+yarn.lock
+.pnpm-debug.log
+
+# ========================
+# TypeScript
+# ========================
+dist/
+build/
+lib/
+coverage/
+*.tsbuildinfo
+
+# ========================
+# Logs
+# ========================
+logs
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ========================
+# Environment Variables
+# ========================
+.env
+.env.*
+!.env.example
+
+# ========================
+# OS / Editor Files
+# ========================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# ========================
+# Jest / Testing
+# ========================
+/coverage/
+jest-cache/
+jest-resources/
+*.lcov
+.cache/
+
+# ========================
+# Build Tools
+# ========================
+.nyc_output/
+.eslintcache
+.tscache/
+.cache-loader/
+
+# ========================
+# Temporary / Misc
+# ========================
+tmp/
+temp/
+*.pid
+*.seed
+*.pid.lock
+*.tgz
+*.orig
+
+# ========================
+# Docker
+# ========================
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# ========================
+# Frontend (if monorepo)
+# ========================
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.next/
+/frontend/out/
+/frontend/.turbo/
+/frontend/.vite/
+
+# ========================
+# Coverage & Reports
+# ========================
+coverage/
+*.lcov
+reports/
+report.xml
+
+# ========================
+# VSCode settings
+# ========================
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# ========================
+# Other tools
+# ========================
+husky/_/
+.prettier-cache/
+.stylelintcache
